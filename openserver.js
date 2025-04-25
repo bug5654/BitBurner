@@ -46,7 +46,7 @@ export async function main(ns) {
     if(nukesuccess) {
       ns.tprint("\nSuccess!  Server: ",host," hacked.",output );
       await ns.sleep(100);
-      ns.exec("assertinstruction.js", "home", 1, host);
+      ns.exec("assertinstruction.js", "home", 1, host,serverToHack);
     } else {
       ns.tprint("\n!!!FAILED!!!   ",host," Not hacked.",output);
     }
