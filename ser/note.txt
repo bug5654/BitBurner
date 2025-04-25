@@ -1,0 +1,1 @@
+Had one for most servers before I figured out that netscript is a weakly-typed language rather than a strongly-typed language.  Didn't copy one for every server that I created.
