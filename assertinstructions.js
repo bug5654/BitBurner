@@ -54,6 +54,7 @@ export async function main(ns) {
   } else {
     host = server;
     output = output + "\n Server: " + host;
+    output = output + "\n Target: " + targetServer;
     if(host == "home") {
       output = output + "\n   " + "Not attempting to copy - home is source server."
       output = output + "\n   " + "Not attempting to kill - stops this script too."

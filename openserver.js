@@ -10,8 +10,8 @@ export async function main(ns) {
     if(host.toLowerCase() == "--help" || host.toLowerCase() == "help") {
       output = output + "\n\n" + fixedPad("  Argument",10) + "   " + "Effect";
       output = output + "\n" + fixedPad(" ----------",10) + "  " + "-----------------";
-      output = output + "\n" + fixedPad("server",10) + "   " + "(mandatory)Which server to hack";
-      output = output + "\n" + fixedPad("<hackServer>",10) + "  " + "(optional)Server to target after takeover";
+      output = output + "\n" + fixedPad("server",10) + "   " + "[mandatory]Which server to hack";
+      output = output + "\n" + fixedPad("<hackServer>",10) + "  " + "<optional>Server to target after takeover";
       ns.tprint(output);
       return 0;
     }
@@ -46,7 +46,8 @@ export async function main(ns) {
     if(nukesuccess) {
       ns.tprint("\nSuccess!  Server: ",host," hacked.",output );
       await ns.sleep(100);
-      ns.exec("assertinstruction.js", "home", 1, host,serverToHack);
+      var debug = ns.exec("assertinstruction.js", "home", 1, host, serverToHack); //serverToHack not working as expected.
+      ns.tprint("Debug: ",debug)
     } else {
       ns.tprint("\n!!!FAILED!!!   ",host," Not hacked.",output);
     }
