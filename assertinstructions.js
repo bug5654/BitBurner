@@ -20,7 +20,7 @@ export async function main(ns) {
     ns.tprint( 
       "\nUsage: run assertinstructions.js host <target> <script>"
       +"\n\thost\t\tMandatory.  The server with root access to run the scripts on"
-      +"\n\t<target>\tOptional.  The argument provided to the script.  Required to be specified to specify a script."
+      +"\n\t<target>\tOptional.  The argument provided to the script.  Required to be specified to specify a script.  Default: " + targetServer
       +"\n\t<script>\tOptional.  Requires <target> to be specified.  The script to be run with maximum threads on host.  Default: " + remoteScriptName
       );
     return 0;
