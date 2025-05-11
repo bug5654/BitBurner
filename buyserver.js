@@ -7,13 +7,15 @@ export async function main(ns) {
   const maxmoney = ns.getServerMoneyAvailable("home");
   var moneyallowed = 0;
     moneyallowed = maxmoney; //USE ALL THE MONEY!
-
+  if(ns.args.length > 0) {
+    moneyallowed = ns.args[0];
+  }
     //uncomment below if you want to use less than ALL your money
     //moneyallowed=10*Math.pow(10,6); //helps with too many 0s, allows not spending ALL money
   
   //arguments and formatting
   var serverName = "";
-  if( ns.args.length == 0 ) {
+  //if( ns.args.length == 0 ) {
     var servers = ns.getPurchasedServers();
     for(var i = 0; i<25; i++) {
       serverName = "home" + i;
@@ -25,9 +27,9 @@ export async function main(ns) {
       ns.tprint("already purchased all available servers");
       return;
     }
-  } else {
-    serverName = ns.args[0];
-  } 
+  //} else {
+  //  serverName = ns.args[0];
+  //} 
 
   ns.tprint("New Server Name: ",serverName);
   while(moneyallowed > ns.getPurchasedServerCost(ram)) {
