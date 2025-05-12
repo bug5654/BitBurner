@@ -5,11 +5,15 @@ export async function main(ns) {
   var output = "";
   ns.tprint("Names:\n",names);
   ns.tprint("\n\nUpgrades:\n",upgrades);
+  var augments = ["Bionic","Brachi",""]
+
   for(var name of names) {
     for(var gear of upgrades) {
       output = output + "\nattempting to buy " + gear + " for " + name + "\n";
       output = output + ns.gang.purchaseEquipment(name, gear);
     }
+    ns.tprint(output);  //debug
+    output = "";  //debug
     return 0; //debug to ensure not spending all money on augments
   }
   ns.tprint(output);
