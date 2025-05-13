@@ -11,10 +11,13 @@ export async function main(ns) {
   }
 
   var servers = getAllServers(ns); //recursively build server list
-  //ns.tprint(servers);  //DEBUG ONLY, COMMENT OUT IN PROD
+  ns.tprint("Serverlist: " + servers);  //DEBUG ONLY, COMMENT OUT IN PROD
   for(var server of servers) {
-    ns.tprint("Running " + remoteScriptName + " " + server);
-    await ns.exec(remoteScriptName,"home",1,server);
+    if( !(server.includes("home")) && 
+      desired(ns.hasRootAccess(server)) ) {/////////////////////
+      ns.tprint("Running " + remoteScriptName + " " + server);
+      await ns.exec(remoteScriptName,"home",1,server);
+    }
   }
 }
 
@@ -34,10 +37,15 @@ function getAllServers(ns) {
             }
         }
     }
-    return knownServers;
+    return [...knownServers];
     //ns.tprint([...knownServers]);
 }
 
+function desired(rootAccess) {
+  //flip if want to run on servers WITH or WITHOUT rootaccess
+  return !rootAccess
+  //rootAccess = run on owned servers !rootAccess = run on unowned servers
+}
 
 
 /*function getAllServers(_ns) {
