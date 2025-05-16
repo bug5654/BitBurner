@@ -1,4 +1,5 @@
 /** @param {NS} ns */
+var debug = false;
 export async function main(ns) {
   var server = ns.args[0];
 
@@ -34,11 +35,11 @@ export async function main(ns) {
   var success = null;
   if (server == null) {
     for (host of ns.getPurchasedServers()) {
-      output = output + "\n  " + host;
+      output = output + dout("\n  " + host);
       success = ns.scp(remoteScriptName,host);
-       output = output + "\n   " + remoteScriptName + " copied." + success;
+       output = output + dout("\n   " + remoteScriptName + " copied." + success);
       success = ns.killall(host);
-       output = output + "\n   " + "scripts killed." + success;
+       output = output + dout("\n   " + "scripts killed." + success);
       ram = ns.getServerMaxRam(host);
       threadcount = Math.floor( ram/ns.getScriptRam(remoteScriptName)); //ns ram expectations of remoteScriptName
       success = ns.exec(remoteScriptName,host,threadcount,targetServer);
@@ -47,27 +48,27 @@ export async function main(ns) {
         output = output + "\n!!!FAILED!!!  could not launch " + threadcount + " threads of " + remoteScriptName;
       } else {
         //returned the PID of the 
-        output = output + "\n   " + threadcount + " threads of " + remoteScriptName +  " running.  PID:" + success;
+        output = output + dout("\n   " + threadcount + " threads of " + remoteScriptName +  " running.  PID:" + success);
       }
       //ns.tprint(output);
     }
   } else {
     host = server;
-    output = output + "\n Server: " + host;
-    output = output + "\n Target: " + targetServer;
+    output = output + "\t" + padTab(3,"Server: " + host) + padTab(3,"Script: " + remoteScriptName);
+    output = output + "Target: " + targetServer;
     if(host == "home") {
       output = output + "\n   " + "Not attempting to copy - home is source server."
       output = output + "\n   " + "Not attempting to kill - stops this script too."
     }else {
       success = ns.scp(remoteScriptName,host);
       if(success) {
-        output = output + "\n   " + remoteScriptName + " copied.";
+        output = output + dout("\n   " + remoteScriptName + " copied.");
       } else {
         output = output + "\n!!!FAILED!!!  " + remoteScriptName + " Failed to copy.";
       }
       success = ns.killall(host);
       if(success) {
-        output = output + "\n   " + "All processes killed.";
+        output = output + dout("\n   " + "All processes killed.");
       } else {
         output = output + "\n!!!FAILED!!!  Processes not killed, may not have been any to kill.";
       }
@@ -83,9 +84,28 @@ export async function main(ns) {
         output = output + "\n!!!FAILED!!!  could not launch " + threadcount + " threads of " + remoteScriptName;
       } else {
         //returned the PID of the 
-        output = output + "\n   " + threadcount + " threads of " + remoteScriptName +  " running.  PID:" + success;
+        output = output + "\tThreads: " + threadcount + "\tPID:" + success;
       }
     }
   }
   ns.tprint(output);
+  return 0;
+}
+
+function dout(str) {
+  if(debug) {
+    return str;
+  }
+  return ""
+}
+
+function padTab(totalTabs, input) {
+  var tabstaken = input.length/8; //length of a tab is 8 spaces
+  var tabsToInsert = totalTabs - tabstaken;
+
+  var output = input;
+  for(var i=0; i<tabsToInsert; i++)
+    output = output + "\t";
+
+  return output;
 }
